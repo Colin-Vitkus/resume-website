@@ -25,3 +25,5 @@ jobs:
           mask-aws-account-id: false
           role-session-name: github-actions
       - run: aws s3 cp ./front-end/index.html s3://colinvitkus.com
+      - run: aws s3 cp ./front-end/styles.css s3://colinvitkus.com
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
