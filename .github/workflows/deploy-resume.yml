@@ -1,0 +1,24 @@
+name: "Deploy"
+run-name: "Deploy by @${{ github.actor }}"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  checks: write
+  contents: read
+
+jobs:
+  upload-index-and-css:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: iris-idp/github-actions/.github/actions/configure-aws-credentials@v16
+        with:
+          role-for-oidc: ${{ vars.OIDC_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - run: aws s3 cp ./front-end/index.html s3://colinvitkus.com
