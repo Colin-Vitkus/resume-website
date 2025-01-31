@@ -17,8 +17,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: iris-idp/github-actions/.github/actions/configure-aws-credentials@v16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-for-oidc: ${{ vars.OIDC_ROLE_ARN }}
+          role-to-assume: ${{ vars.OIDC_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
+          role-duration-seconds: 900
+          mask-aws-account-id: false
+          role-session-name: github-actions
       - run: aws s3 cp ./front-end/index.html s3://colinvitkus.com
